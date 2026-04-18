@@ -16,7 +16,7 @@ function Scanner() {
             await scanner.start(
                 { facingMode: "environment" },
                 {
-                    fps: 5,
+                    fps: 2,
                     qrbox: 250
                 },
                 async (decodetext) => {
