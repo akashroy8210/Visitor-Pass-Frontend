@@ -2,9 +2,9 @@ import React, { act, useState } from 'react'
 import Navbar from '../component/Navbar'
 import Logs from '../component/Logs'
 import ProfileCard from '../component/ProfileCard'
-import CreateStaff from '../component/createStaff'
+import CreateStaff from '../component/CreateStaff'
 import Staff from '../component/Staff'
-import VisitorCard from '../component/visitorCard'
+import VisitorCard from "../component/VisitorCard"
 import useAuth from '../context/AuthContext'
 import { Link } from 'react-router-dom'
 function Admin() {
