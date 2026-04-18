@@ -14,7 +14,7 @@ function Scanner() {
             setScannedData("");
             setError("")
             await scanner.start(
-                { facingMode: "user" },
+                { facingMode: "environment" },
                 {
                     fps: 5,
                     qrbox: 250
