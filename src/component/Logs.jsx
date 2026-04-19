@@ -52,7 +52,7 @@ function Logs() {
                         <span className='text-gray-700 text-lg font-semibold'>Last 7 days Logs</span>
                     </p>
                     {logs.length > 0 ? (
-                        <div>
+                        <div className="flex flex-col gap-5">
                             {logs.map((log) => (
                                 <div
                                 key={log._id}
