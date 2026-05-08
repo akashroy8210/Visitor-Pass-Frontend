@@ -14,15 +14,15 @@ function Scanner() {
             setScannedData("");
             setError("")
             await scanner.start(
-                { facingMode: "user" },
+                { facingMode: "environment" },
                 {
-                    fps: 5,
+                    fps: 2,
                     qrbox: 250
                 },
                 async (decodetext) => {
-                    const passId = JSON.parse(decodetext).passId
+                    // const passId = JSON.parse(decodetext).passId
                     try {
-                        const res = await api.post('/api/users/security/scanQr', { id: passId })
+                        const res = await api.post('/api/users/security/scanQr', {decodetext })
                         console.log("scanned", res.data.existingLog);
                         console.log("scanned", res.data.pass);
                         const data = res.data

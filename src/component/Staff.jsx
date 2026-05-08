@@ -22,7 +22,7 @@ function Staff() {
         if (staff === activeStaff) {
             return "bg-gray-800 text-white"
         } else {
-            return "bg-white text-gray-700"
+            return "bg-white text-gray-700 transistion-all duration-300 hover:bg-gray-800 hover:text-white  border border-gray-300 "
         }
     }
     const handleRemoveStaff = async (staffId) => {

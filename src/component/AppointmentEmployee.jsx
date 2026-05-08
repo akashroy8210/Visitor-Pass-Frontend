@@ -57,7 +57,7 @@ function AppointmentEmployee() {
     if (option === navbarActive) {
       return "bg-gray-800 text-white"
     } else {
-      return "bg-white text-gray-700"
+      return "bg-white text-gray-700 transistion-all duration-300 hover:bg-gray-800 hover:text-white  border border-gray-300 "
     }
   }
   const totalPending = appointments.filter(appointment => appointment.status === "pending")
@@ -73,7 +73,7 @@ function AppointmentEmployee() {
           </p>
         </div>
         {/* sidebar  */}
-        <div className='flex  gap-5'>
+        <div className='flex gap-5'>
           <p
             onClick={() => {
               setNav(appointments)
@@ -110,7 +110,7 @@ function AppointmentEmployee() {
         {totalRejected.length === 0 && navbarActive === "rejected" && <p className='text-gray-800 bg-gray-50 border border-gray-300 py-2 rounded-2xl text-center h-150 flex items-center justify-center text-lg'>No Rejected Appointments</p>}
         {/* appointments card */}
         {nav.map((appointemnt) => (
-          <div key={appointemnt._id} className='bg-white transistion-all duration-150 rounded-2xl shadow-md hover:shadow-xl relative px-8 py-5 border border-gray-300'>
+          <div key={appointemnt._id} className='bg-white transistion-all duration-150  rounded-2xl shadow-md hover:shadow-xl relative px-8 py-5 border border-gray-300'>
             <div className='flex flex-col justify-between gap-2'>
               <p className='text-xl font-bold  text-gray-800'>{appointemnt.visitorId?.name}</p>
               <p className='flex gap-2 text-lg items-center text-gray-800'>

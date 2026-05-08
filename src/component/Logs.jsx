@@ -56,7 +56,7 @@ function Logs() {
                             {logs.map((log) => (
                                 <div
                                 key={log._id}
-                                className='bg-white  transistion-all duration-150 flex  gap-3  flex-col rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 relative px-8 py-5 border border-gray-300'>
+                                className='bg-white mt-5 transistion-all duration-250 flex  gap-3  flex-col rounded-2xl  hover:shadow-md hover:-translate-y-1 relative px-8 py-5 border border-gray-300'>
                                     <p
                                     className='flex gap-4 px-2 items-center'
                                     >

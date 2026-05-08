@@ -7,6 +7,7 @@ import Visitor from './pages/Visitor'
 import Employee from './pages/Employee'
 import Admin from './pages/Admin'
 import Security from './pages/Security'
+import ForgetPassword from './component/ForgetPassword'
 function App() {
 
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path='/users/employee' element={<Employee/>}/>
         <Route path='/users/admin' element={<Admin/>}/>
         <Route path='/users/security' element={<Security />} />
+        <Route path='/findUser' element={<ForgetPassword/>}/>
       </Routes>
   )
 }

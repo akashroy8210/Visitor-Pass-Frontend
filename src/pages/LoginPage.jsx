@@ -7,6 +7,10 @@ function LoginPage() {
   const [loading,setLoading]=useState(false)
   const [error,setError]=useState("")
   const navigate=useNavigate()
+
+  const handleForgetPassword=()=>{
+    navigate("/findUser")
+  }
   const handleLogin=async()=>{
       try{
         setLoading(true)
@@ -60,7 +64,7 @@ function LoginPage() {
             />
           </div>
           <div>
-            {error && <p className='bg-rose-100 font-semibold border-rose-500 text-center py-2 px-4 rounded-xl text-rose-500 border border-rose-200'>{error}</p>}
+            {error && <p className=' font-semibold text-center py-2 px-4 rounded-xl text-rose-500 border border-rose-500'>{error}</p>}
           </div>
           <div>
             <button
@@ -68,6 +72,11 @@ function LoginPage() {
             onClick={handleLogin}
             className='bg-[#ACBAC4]  text-slate-900 transition hover:bg-[#c8d4dc] w-full py-2 rounded-xl font-semibold text-lg '
             >{loading ? "Loading..." : "Login"}</button>
+          </div>
+          <div 
+          onClick={()=>{handleForgetPassword()}}
+          className='flex items-center justify-center hover:bg-slate-800 hover:border border-gray-400 cursor-pointer font-semibold rounded-xl  m-0 px-4 py-2'>
+            <p>Forget Password?</p>
           </div>
           <div>
             <p className='text-sm text-gray-300 flex gap-2 justify-center'>

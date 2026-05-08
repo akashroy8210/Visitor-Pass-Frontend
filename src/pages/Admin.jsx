@@ -22,7 +22,7 @@ function Admin() {
     return (
         <div className='bg-white h-screen'>
             <div className='flex'>
-                <div className='w-80 fixed bg-slate-900 text-xl text-gray-800 border-r flex flex-col gap-2 border-gray-500 min-h-screen py-4 px-4'>
+                <div className='w-80 fixed bg-slate-950 text-xl text-gray-800 border-r flex flex-col gap-2 border-gray-500 min-h-screen py-4 px-4'>
                     <p
                         className={`cursor-pointer py-2 px-4 text-white flex items-center gap-2 rounded-lg hover:bg-[#272A39]  ${styleActivePage("profile")}`}
                         onClick={() => setActivePage("profile")}
