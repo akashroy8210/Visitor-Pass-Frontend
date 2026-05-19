@@ -77,6 +77,7 @@ function SignupPage() {
       ...profile,
       [name]: value
     })
+    setError("")
   }
 
   const handliImageChange = (e) => {
@@ -143,10 +144,7 @@ function SignupPage() {
                   <input
                     className='w-full rounded-xl border border-gray-400 bg-transparent px-4 py-2 outline-none transition duration-300 focus:border-gray-50'
                     value={profile.name}
-                    onChange={(e) => {
-                      handleFileChange(e)
-                      setError("")
-                    }}
+                    onChange={handleFileChange}
                     type="text"
                     name="name"
                     id="name"
@@ -160,10 +158,7 @@ function SignupPage() {
                   <input
                     className='w-full rounded-xl border border-gray-400 bg-transparent px-4 py-2 outline-none focus:border-gray-50'
                     value={profile.email}
-                    onChange={(e) => {
-                      handleFileChange(e)
-                      setError("")
-                    }}
+                    onChange={handleFileChange}
                     type="email"
                     name="email"
                     id="email"
@@ -179,10 +174,7 @@ function SignupPage() {
                   <input
                     className='w-full rounded-xl border border-gray-400 bg-transparent px-4 py-2 outline-none focus:border-gray-50'
                     value={profile.phone}
-                    onChange={(e) => {
-                      handleFileChange(e)
-                      setError("")
-                    }}
+                    onChange={handleFileChange}
                     type="tel"
                     name="phone"
                     id="phone"
@@ -194,10 +186,7 @@ function SignupPage() {
                   <input
                     className='w-full rounded-xl border border-gray-400 bg-transparent px-4 py-2 outline-none focus:border-gray-50'
                     value={profile.password}
-                    onChange={(e) => {
-                      handleFileChange(e)
-                      setError("")
-                    }}
+                    onChange={handleFileChange}
                     onKeyDown={(e) => {
                       if (e.key === "Enter") handleSignup()
                     }}
