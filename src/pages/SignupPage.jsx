@@ -60,7 +60,7 @@ function SignupPage() {
         name: res.data.visitorProfile.name,
         role: res.data.user.role,
         email: res.data.visitorProfile.email,
-        image:res.data.visitorProfile.image
+        image: res.data.visitorProfile.image
       }))
       setSuccess("Account verified successfully.")
       navigate(`/users/${res.data.user.role.toLowerCase()}`)
@@ -229,70 +229,72 @@ function SignupPage() {
           </div>
         </div>
       ) : (
-        <div className='flex w-full max-w-md flex-col items-center h-130 gap-5 rounded-3xl border border-gray-500 bg-white/5 px-10 py-8 shadow-xl backdrop-blur-2xl'>
-          <div className='text-center'>
-            <p className='text-center text-lg tracking-widest text-yellow-500'>
-              Welcome
-            </p>
-            <h1 className='mt-5 text-4xl font-bold'>Verify OTP</h1>
-            <p className='mt-3 text-sm text-gray-300'>
-              Enter the OTP sent to <span className='font-semibold text-cyan-300'>{profile.email}</span>
-            </p>
-          </div>
-
-          <div className='mt-4 flex w-full flex-col gap-5'>
-            <div className='relative'>
-              <label className='text-sm text-gray-400' htmlFor="otp">
-                OTP Code
-              </label>
-              <input
-                className='w-full rounded-xl border border-gray-400 bg-[#2a2f42] px-4 py-3 text-center text-lg tracking-[0.5em] outline-none transition duration-300 focus:border-gray-50'
-                value={profile.otp}
-                onChange={(e) => {
-                  handleFileChange(e)
-                  setError("")
-                }}
-                type="text"
-                name="otp"
-                id="otp"
-                maxLength={6}
-              />
+        <div className='min-h-screen bg-gradient-to-br from -[#30364F] to-[#2a2f42] flex items-center justify-center'>
+          <div className='flex w-full max-w-md flex-col items-center h-130 gap-5 rounded-3xl border border-gray-500 bg-white/5 px-10 py-8 shadow-xl backdrop-blur-2xl'>
+            <div className='text-center'>
+              <p className='text-center text-lg tracking-widest text-yellow-500'>
+                Welcome
+              </p>
+              <h1 className='mt-5 text-4xl font-bold'>Verify OTP</h1>
+              <p className='mt-3 text-sm text-gray-300'>
+                Enter the OTP sent to <span className='font-semibold text-cyan-300'>{profile.email}</span>
+              </p>
             </div>
 
-            {success && (
-              <p className='rounded-xl border border-emerald-200 bg-emerald-100 px-4 py-2 text-center font-semibold text-emerald-600'>
-                {success}
-              </p>
-            )}
+            <div className='mt-4 flex w-full flex-col gap-5'>
+              <div className='relative'>
+                <label className='text-sm text-gray-400' htmlFor="otp">
+                  OTP Code
+                </label>
+                <input
+                  className='w-full rounded-xl border border-gray-400 bg-[#2a2f42] px-4 py-3 text-center text-lg tracking-[0.5em] outline-none transition duration-300 focus:border-gray-50'
+                  value={profile.otp}
+                  onChange={(e) => {
+                    handleFileChange(e)
+                    setError("")
+                  }}
+                  type="text"
+                  name="otp"
+                  id="otp"
+                  maxLength={6}
+                />
+              </div>
 
-            {error && (
-              <p className='rounded-xl border border-rose-200 bg-rose-100 px-4 py-2 text-center font-semibold text-rose-500'>
-                {error}
-              </p>
-            )}
+              {success && (
+                <p className='rounded-xl border border-emerald-200 bg-emerald-100 px-4 py-2 text-center font-semibold text-emerald-600'>
+                  {success}
+                </p>
+              )}
 
-            <div>
+              {error && (
+                <p className='rounded-xl border border-rose-200 bg-rose-100 px-4 py-2 text-center font-semibold text-rose-500'>
+                  {error}
+                </p>
+              )}
+
+              <div>
+                <button
+                  disabled={loading}
+                  onClick={handleVerifyOtp}
+                  className='w-full rounded-xl bg-[#ACBAC4] py-2 text-lg font-semibold text-slate-900 transition hover:bg-[#c8d4dc] disabled:cursor-not-allowed disabled:opacity-70'
+                >
+                  {loading ? "Verifying..." : "Verify OTP"}
+                </button>
+              </div>
+
               <button
-                disabled={loading}
-                onClick={handleVerifyOtp}
-                className='w-full rounded-xl bg-[#ACBAC4] py-2 text-lg font-semibold text-slate-900 transition hover:bg-[#c8d4dc] disabled:cursor-not-allowed disabled:opacity-70'
+                type="button"
+                onClick={() => {
+                  setStep(1)
+                  setProfile((prev) => ({ ...prev, otp: "" }))
+                  setError("")
+                  setSuccess("")
+                }}
+                className='text-sm font-semibold text-cyan-300 transition hover:text-cyan-200'
               >
-                {loading ? "Verifying..." : "Verify OTP"}
+                Back to signup
               </button>
             </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setStep(1)
-                setProfile((prev) => ({ ...prev, otp: "" }))
-                setError("")
-                setSuccess("")
-              }}
-              className='text-sm font-semibold text-cyan-300 transition hover:text-cyan-200'
-            >
-              Back to signup
-            </button>
           </div>
         </div>
       )}
