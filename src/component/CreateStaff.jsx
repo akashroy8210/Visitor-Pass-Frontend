@@ -1,32 +1,45 @@
 import React, { useState } from 'react'
 import api from '../api/api'
 function CreateStaff() {
-    const [email, setEmail] = useState("")
-    const [name, setName] = useState("")
-    const [password, setPassword] = useState("")
-    const [staff, setStaff] = useState("")
+    const [isPhoto, setIsPhoto] = useState(false)
+    const [preview, setPreview] = useState({
+        image: ""
+    })
+    const [profile, setProfile] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        password: "",
+        image: "",
+        staff: ""
+    })
+    const [showPassword,setShowPassword]=useState(false)
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState("")
     const handleCreateStaff = async () => {
-
         try {
             setLoading(true)
             setError("")
             setSuccess("")
-            const res = await api.post('/api/users/admin/addStaff', {
-                email,
-                name,
-                password,
-                role: staff
-            })
+            const formData = new FormData()
+            formData.append("image", profile.image)
+            formData.append("name", profile.name)
+            formData.append("email", profile.email)
+            formData.append("password", profile.password)
+            formData.append("phone", profile.phone)
+            formData.append("role", profile.staff)
+            const res = await api.post('/api/users/admin/addStaff', formData)
             setError("")
             setSuccess(res?.data?.message || "Staff created successfully")
-            setEmail("")
-            setName("")
-            setPassword("")
-            setStaff("")
-
+            setProfile({
+                name: "",
+                email: "",
+                phone: "",
+                password: "",
+                image: "",
+                staff: ""
+            })
         } catch (err) {
             console.log("full error:", err)
             console.log("status:", err?.response?.status)
@@ -36,6 +49,28 @@ function CreateStaff() {
         } finally {
             setLoading(false)
         }
+    }
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setProfile({
+            ...profile,
+            [name]: value
+        })
+    }
+    const handliImageChange = (e) => {
+        const image = e.target.files[0]
+        if (image) {
+            setProfile((prev) => (
+                {
+                    ...prev,
+                    image: image,
+                }
+            ))
+        }
+        preview.image = URL.createObjectURL(image)
+        console.log(profile, preview.image)
+        setIsPhoto(true)
     }
     return (
         <div className='min-h-screen bg-[#F7FAFF] py-10 '>
@@ -52,18 +87,40 @@ function CreateStaff() {
                         <form
                             className='flex flex-col gap-5'
                             action="">
+                            <div>
+                                {!isPhoto ? (
+                                    <div className='flex justify-center'>
+                                        <div className='bg-gray-700 backdrop-blur-2xl h-25 w-25 rounded-full flex items-center justify-center border  border-gray-300'>
+                                            <label className='text-3xl w-25 h-25 flex items-center justify-center' htmlFor="image"><ion-icon name="camera-outline"></ion-icon></label>
+                                            <input
+                                                onChange={handliImageChange}
+                                                type="file" name="image" id="image" hidden />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className='flex justify-center flex-col items-center gap-1'>
+                                        <div className='bg-gray-300 backdrop-blur-2xl h-25 w-25 rounded-full flex items-center justify-center border overflow-hidden border-gray-300'>
+                                            <img src={preview.image} alt={profile.name.charAt(0)} />
+                                        </div>
+                                        <div>
+                                            <label className='text-gray-800' htmlFor="image">Change Image</label>
+                                            <input
+                                                onChange={handliImageChange}
+                                                type="file" name="image" id="image" hidden />
+                                        </div>
+                                    </div>
+                                )
+                                }
+                            </div>
                             <div className='flex w-full justify-between gap-10'>
                                 <div className='flex flex-col w-full'>
                                     <label
                                         className='text-gray-500 text-lg font-semibold'
                                         htmlFor="name">Name</label>
                                     <input
-                                        value={name}
-                                        onChange={(e) => {
-                                            setName(e.target.value)
-                                            setError("")
-                                        }}
-                                        className='bg-white py-2 px-4 text-gray-800 outline-none  text-lg rounded-2xl'
+                                        value={profile.name}
+                                        onChange={handleChange}
+                                        className=' input-box'
                                         type="text"
                                         name="name"
                                         id="name"
@@ -75,12 +132,9 @@ function CreateStaff() {
                                         className='text-gray-500 text-lg font-semibold'
                                         htmlFor="email">Email</label>
                                     <input
-                                        value={email}
-                                        onChange={(e) => {
-                                            setEmail(e.target.value)
-                                            setError("")
-                                        }}
-                                        className='bg-white py-2 px-4  outline-none text-lg text-gray-800 rounded-2xl'
+                                        value={profile.email}
+                                        onChange={handleChange}
+                                        className='input-box'
                                         type="email"
                                         name="email"
                                         id="email"
@@ -89,40 +143,52 @@ function CreateStaff() {
                                 </div>
                             </div>
                             <div className='flex justify-between gap-10'>
-                                <div className='flex flex-col w-full'>
+                                <div className='flex flex-col w-full relative'>
                                     <label
                                         className='text-gray-500 text-lg font-semibold'
                                         htmlFor="password">Password</label>
                                     <input
-                                        value={password}
-                                        onChange={(e) => {
-                                            setPassword(e.target.value)
-                                            setError("")
-                                        }}
-                                        className='bg-white py-2 px-4 text-gray-800 outline-none rounded-2xl'
-                                        type="password"
+                                        value={profile.password}
+                                        onChange={handleChange}
+                                        className='input-box'
+                                        type={showPassword ? "text" : "password"}
                                         name="password"
                                         id="password"
                                         placeholder='Enter Password...'
                                     />
+                                    <ion-icon 
+                                    className="absolute right-2 top-2/3 -translate-1/2 text-gray-800  "
+                                    name={showPassword ? "eye-outline" : "eye-off-outline"} onClick={() => setShowPassword(!showPassword)}></ion-icon>
                                 </div>
-                                <div className='w-full flex flex-col'>
+                                <div className='flex flex-col w-full'>
                                     <label
-                                        className='text-gray-500 text-lg font-semibold '
-                                        htmlFor="staff">Select Staff</label>
-                                    <select
-                                        value={staff}
-                                        onChange={(e) => {
-                                            setStaff(e.target.value)
-                                            setError("")
-                                        }}
-                                        className='text-gray-800 text-lg outline-none bg-white py-2 rounded-2xl px-4'
-                                        name="staff" id="staff">
-                                        <option value="">Select Staff</option>
-                                        <option value="Employee">Employee</option>
-                                        <option value="Security">Security</option>
-                                    </select>
+                                        className='text-gray-500 text-lg font-semibold'
+                                        htmlFor="email">Phone</label>
+                                    <input
+                                        value={profile.phone}
+                                        onChange={handleChange}
+                                        className='input-box'
+                                        type="phone"
+                                        name="phone"
+                                        id="phone"
+                                        placeholder='Enter Staff phone number...'
+                                    />
                                 </div>
+
+                            </div>
+                            <div className='w-full flex flex-col'>
+                                <label
+                                    className='text-gray-500 text-lg font-semibold '
+                                    htmlFor="staff">Select Staff</label>
+                                <select
+                                    value={profile.staff}
+                                    onChange={handleChange}
+                                    className='input-box'
+                                    name="staff" id="staff">
+                                    <option value="">Select Staff</option>
+                                    <option value="Employee">Employee</option>
+                                    <option value="Security">Security</option>
+                                </select>
                             </div>
                             <button
                                 type='button'

@@ -55,9 +55,9 @@ function AppointmentEmployee() {
   }
   const styleSelectedNavbar = (option) => {
     if (option === navbarActive) {
-      return "bg-gray-800 text-white"
+      return "active"
     } else {
-      return "bg-white text-gray-700 transistion-all duration-300 hover:bg-gray-800 hover:text-white  border border-gray-300 "
+      return "inActive"
     }
   }
   const totalPending = appointments.filter(appointment => appointment.status === "pending")

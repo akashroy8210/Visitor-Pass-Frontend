@@ -2,6 +2,7 @@ import React from 'react'
 
 function ProfileCard() {
   const user = JSON.parse(localStorage.getItem("user"))
+  const userImage=user.image
 
   return (
     <div className='min-h-screen py-10 bg-[#F7FAFF]'>
@@ -16,8 +17,9 @@ function ProfileCard() {
 
           <div className='flex flex-col items-center gap-2 justify-center'>
             {/* image name role */}
-            <div className='w-25 h-25 bg-cyan-100 rounded-full flex items-center justify-center '>
-              <p className='text-gray-800 font-bold'>{user.name? user.name.charAt(0):"U" }</p>
+            <div className='w-25 h-25 bg-cyan-100 rounded-full flex items-center justify-center overflow-hidden '>
+              <img src={userImage} alt={user.name? user.name.charAt(0):"U"} />
+              {/* <p className='text-gray-800 font-bold'>{user.name? user.name.charAt(0):"U" }</p> */}
             </div>
             <div className='text-center'>
               <h3 className='text-gray-700 text-2xl font-bold'>{user.name}</h3>

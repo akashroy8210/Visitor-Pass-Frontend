@@ -13,6 +13,9 @@ function Appointment({ goToCreateAppointment }) {
         if (new Date(date) < new Date() && status === "pending") {
             return true
         }
+        if(new Date(date) < new Date() && status === "approved"){
+            return true
+        }
     }
     useEffect(() => {
         const fetchAppointment = async () => {
@@ -54,9 +57,9 @@ function Appointment({ goToCreateAppointment }) {
     }
     const styleSelectedNavbar = (option) => {
         if (option === navbarActive) {
-            return "bg-gray-800 text-white"
+            return "active"
         } else {
-            return "bg-white text-gray-700"
+            return "inActive"
         }
     }
     const handleNewAppointment = async () => {

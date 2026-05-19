@@ -25,7 +25,7 @@ function Logs() {
                 const fetchedLogs = res.data.logs
                 setLogs(fetchedLogs)
             } catch (err) {
-                setError(err.response?.data?.message || "Unable to fetch logs.")
+                setError(err.response?.data?.message)
             } finally {
                 setLoading(false)
             }
@@ -52,7 +52,7 @@ function Logs() {
                         <span className='text-gray-700 text-lg font-semibold'>Last 7 days Logs</span>
                     </p>
                     {logs.length > 0 ? (
-                        <div>
+                        <div className="flex flex-col gap-5">
                             {logs.map((log) => (
                                 <div
                                 key={log._id}
@@ -95,8 +95,8 @@ function Logs() {
                             ))}
                         </div>
                     ) : (
-                        <div>
-                            <p className='text-rose-600 bg-rose-100 border border-rose-600 py-2 rounded-2xl text-center text-lg'>{error}</p>
+                        <div className='min-h-160 flex items-center justify-center bg-white rounded-2xl border-gray-300 border' >
+                            <p className='py-2 rounded-2xl text-center font-semibold text-gray-800 text-xl'>{"No logs found"}</p>
                         </div>
                     )
                     }

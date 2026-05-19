@@ -61,3 +61,30 @@ body {
   box-shadow: var(--shadow-soft), var(--shadow-glow);
   border-radius: 24px;
 }
+.active{
+  background-color: #1e2939;
+  color: white;
+}
+
+.inActive{
+  background-color: #ffffff;
+  color: #364153;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #d1d5dc;
+
+}
+.inActive:hover{
+  background-color: #1e2939;
+  color: white;
+}
+
+.input-box{
+  background-color: white;
+  color: #1e2939;
+  padding: 8px 16px;
+  outline: none;
+  font-size:18px ;
+  border-radius: 0.6rem;
+  border: 1px solid #d1d5dc;
+}
+

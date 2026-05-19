@@ -6,6 +6,7 @@ function LoginPage() {
   const [password, setPassword] = useState("")
   const [loading,setLoading]=useState(false)
   const [error,setError]=useState("")
+  const [showPassword,setShowPassword]=useState(false)
   const navigate=useNavigate()
 
   const handleForgetPassword=()=>{
@@ -20,7 +21,9 @@ function LoginPage() {
           _id:res.data.user._id,
           name:res.data.user.name,
           role:res.data.user.role,
-          email:res.data.user.email
+          email:res.data.user.email,
+          image:res.data.user.image,
+          phone:res.data.user.phone
         }))
         navigate(`/users/${res.data.user.role.toLowerCase()}`)
       }catch(err){
@@ -28,6 +31,9 @@ function LoginPage() {
         setError(err.response.data.message)
         console.log(err.response.data.message)
       }
+  }
+  const togglePasswordShow=()=>{
+    setShowPassword(!showPassword)
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from -[#30364F] to-[#2a2f42] flex items-center justify-center">
@@ -51,17 +57,19 @@ function LoginPage() {
               type="email" name="email" id="email"
             />
           </div>
-          <div className='relative '>
+          <div className='relative'>
             <label className=' text-gray-400  text-sm ' htmlFor="password">Password</label>
             <input
-              className= 'bg-[#2a2f42] w-full py-2 px-4  focus:border-gray-50 border border-gray-400 rounded-xl outline-none '
+              className= {`bg-[#2a2f42] w-full py-2 px-4  focus:border-gray-50 border border-gray-400 rounded-xl outline-none`}
               value={password}
               onChange={(e) =>{
                 setPassword(e.target.value)
                 setError("")
               }}
-              type="password" name="password" id="password"
+              type={showPassword?"text":"password"} name="password" id="password"
             />
+            
+            <ion-icon name={showPassword ? "eye-outline" : "eye-off-outline"} onClick={togglePasswordShow} className='absolute right-2 top-2/3 -translate-1/2 text-gray-100'></ion-icon>
           </div>
           <div>
             {error && <p className=' font-semibold text-center py-2 px-4 rounded-xl text-rose-500 border border-rose-500'>{error}</p>}
