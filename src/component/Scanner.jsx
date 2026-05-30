@@ -20,9 +20,10 @@ function Scanner() {
                     qrbox: 250
                 },
                 async (decodetext) => {
-                    // const passId = JSON.parse(decodetext).passId
+                    // const passId = JSON.parse(decodetext)
+                    // console.log(passId)
                     try {
-                        const res = await api.post('/api/users/security/scanQr', {decodetext })
+                        const res = await api.post('/api/users/security/scanQr', {id:decodetext })
                         console.log("scanned", res.data.existingLog);
                         console.log("scanned", res.data.pass);
                         const data = res.data
