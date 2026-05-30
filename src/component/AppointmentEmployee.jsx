@@ -5,13 +5,13 @@ function AppointmentEmployee() {
   const [appointments, setAppointments] = useState([])
   const [nav, setNav] = useState([])
   const [navbarActive, setNavbarActive] = useState("appointments")
-  const [loading, setLoading] = useState(false)
+  const [approveLoading, setApproveLoading] = useState(false)
+  const [rejectLoading, setRejectLoading] = useState(false)
   const [success, setSuccess] = useState("")
   const fetchAppointment = async () => {
     try {
       setError("")
       setSuccess("")
-      setLoading(true)
       const res = await api.get('/api/users/employee/allAppointments');
       const fetchedAppointments = res.data.appointemnt || []
       setAppointments(fetchedAppointments)
@@ -20,7 +20,6 @@ function AppointmentEmployee() {
       setSuccess("")
       setError(err?.response?.data?.message || 'Unable to fetch appointments.')
     } finally {
-      setLoading(false)
     }
   }
   useEffect(() => {
@@ -29,7 +28,11 @@ function AppointmentEmployee() {
 
   const handleResponse = async (appointmentId, status) => {
     try {
-      setLoading(true)
+      if(status==="approved"){
+        setApproveLoading(true)
+      }else if(status==="rejected"){
+        setRejectLoading(true)
+      }
       setError("")
       const res = await api.post('/api/users/employee/appoitments/response', { appointmentId, status })
       setSuccess(res.data.message)
@@ -37,7 +40,8 @@ function AppointmentEmployee() {
     } catch (err) {
       setError(err.response.data.message)
     } finally {
-      setLoading(false)
+      setApproveLoading(false)
+      setRejectLoading(false)
     }
   }
 
@@ -110,53 +114,69 @@ function AppointmentEmployee() {
         {totalRejected.length === 0 && navbarActive === "rejected" && <p className='text-gray-800 bg-gray-50 border border-gray-300 py-2 rounded-2xl text-center h-150 flex items-center justify-center text-lg'>No Rejected Appointments</p>}
         {/* appointments card */}
         {nav.map((appointemnt) => (
-          <div key={appointemnt._id} className='bg-white transistion-all duration-150  rounded-2xl shadow-md hover:shadow-xl relative px-8 py-5 border border-gray-300'>
-            <div className='flex flex-col justify-between gap-2'>
-              <p className='text-xl font-bold  text-gray-800'>{appointemnt.visitorId?.name}</p>
-              <p className='flex gap-2 text-lg items-center text-gray-800'>
-                <ion-icon name="mail-outline"></ion-icon>
-                <span>{appointemnt.visitorId?.email}</span>
-              </p>
-              <p className='text-lg text-gray-700 flex items-center gap-2'>
-                <ion-icon name="calendar-clear-outline"></ion-icon>
-                <span>{appointemnt.date ? new Date(appointemnt.date).toLocaleDateString() : "No Date"}</span>
-              </p>
-              <p className='text-lg text-gray-700 flex items-center gap-2'>
-                <ion-icon name="time-outline"></ion-icon>
-                <span>{appointemnt.date ? new Date(appointemnt.date).toLocaleTimeString() : "No Date"}</span>
-              </p>
+          <div key={appointemnt._id} className='bg-white transistion-all duration-150  rounded-2xl shadow-md hover:shadow-xl relative px-8 py-8 border border-gray-300'>
+            <div className='flex gap-5 w-full '>
+              <div className="w-30 h-30 rounded-full overflow-hidden border-4 border-white shadow-lg flex-shrink-0">
+                <img
+                  src={appointemnt.visitorId?.image}
+                  alt="Visitor"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className='w-5/6'>
+                <div className='flex flex-col justify-between gap-2 border-b border-gray-200 pb-4'>
+                  <p className='text-xl font-bold  text-gray-800'>{appointemnt.visitorId?.name}</p>
+                  <p className='flex gap-2 text-lg items-center text-gray-800'>
+                    <ion-icon name="mail-outline"></ion-icon>
+                    <span>{appointemnt.visitorId?.email}</span>
+                  </p>
+                  <p className='text-lg text-gray-700 flex items-center gap-2'>
+                    <ion-icon name="calendar-clear-outline"></ion-icon>
+                    <span>{appointemnt.date ? new Date(appointemnt.date).toLocaleDateString() : "No Date"}</span>
+                  </p>
+                  <p className='text-lg text-gray-700 flex items-center gap-2'>
+                    <ion-icon name="time-outline"></ion-icon>
+                    <span>{appointemnt.date ? new Date(appointemnt.date).toLocaleTimeString() : "No Date"}</span>
+                  </p>
+                </div>
+                <div className='flex items-center py-2 '>
+                  <p className='text-gray-900 text-lg font-semibold tracking-wide'>Purpose:</p>
+                  <p className=' text-lg  px-4 py-2 text-gray-700'>{appointemnt.message}</p>
+                </div>
+              </div>
             </div>
-            <div className='flex items-center '>
-              <p className='text-gray-900 text-lg font-semibold tracking-wide'>Purpose:</p>
-              <p className=' text-lg  px-4 py-2 text-gray-700'>{appointemnt.message}</p>
-            </div>
+
             {/* status response */}
             {appointemnt.status === "pending" ? (
-              <div className='flex justify-between gap-10 mt-2'>
+
+              <div className='flex items-end-safe w-full gap-10 border-t pt-4 border-gray-200'>
                 <button
-                  disabled={loading}
+                  disabled={approveLoading}
                   onClick={() => {
                     handleResponse(appointemnt._id, "approved")
                   }}
-                  className='bg-[#00C660] py-3 px-4 flex items-center gap-2 w-full justify-center rounded-2xl font-semibold text-white hover:transform hover:-translate-y-0.5 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-xl'
+                  className='bg-[#00C660] py-3  flex items-center gap-2 px-10 w-fit justify-center rounded-xl font-semibold text-white hover:transform hover:-translate-y-0.5 hover:bg-emerald-600 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-xl'
                 >
                   <ion-icon
                     className="text-xl"
                     name="checkmark-circle-outline"></ion-icon>
-                  <span>{loading ? "Approving..." : "Approve"}</span>
+                  <span>{approveLoading? "Approving..." : "Approve"}</span>
                 </button>
                 <button
-                  disabled={loading}
+                  disabled={rejectLoading}
                   onClick={() => {
                     handleResponse(appointemnt._id, "rejected")
                   }}
-                  className='bg-[#FD2843] py-3 px-4 flex items-center gap-2 w-full justify-center rounded-2xl font-semibold text-white hover:transform hover:-translate-y-0.5 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-xl'
+                  className='bg-[#FD2843] py-3  flex items-center gap-2 w-fit px-10 justify-center rounded-xl font-semibold text-white hover:bg-red-600 hover:transform hover:-translate-y-0.5 cursor-pointer transition-all duration-200 ease-in-out hover:shadow-xl'
                 >
                   <ion-icon
                     className="text-xl"
                     name="close-circle-outline"></ion-icon>
-                  <span>{loading ? "Rejecting..." : "Reject"}</span>
+                  <span>{rejectLoading ? "Rejecting..." : "Reject"}</span>
                 </button>
+                <p className={`${styleStatus(appointemnt.status)} text-md bg-green-600 w-fit  px-5 py-1 rounded-2xl absolute  top-5 right-5`}>
+                  <span className='uppercase tracking-wider'>{appointemnt.status}</span>
+                </p>
               </div>
             ) : (
               <p className={`${styleStatus(appointemnt.status)} text-md bg-green-600 w-fit  px-5 py-1 rounded-2xl absolute  top-5 right-5`}>
